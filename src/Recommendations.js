@@ -9,9 +9,17 @@ const recommendations = [
 	['Paul Simon', 'Jake Paul'],
 	['Kanye West', 'Taylor Swift'],
 	['Jimi Hendrix', 'Future'],
-	['Kirko Bangz', 'Kurt Cobain'],
-	['Wolfgang Amadeus Mozart', 'Skrillex'],
-	['Lorde', 'JAY Z']
+	['Kurt Cobain', 'Kirko Bangz'],
+	['Ludwig van Beethoven', 'Zaytoven'],
+	['Lorde', 'JAY Z'],
+	['Willow', 'Jaden Smith'],
+	['B.o.B', 'Bob Marley & The Wailers'],
+	['2Pac', 'Backstreet Boys'],
+	['Jonny Cash', 'Ty Dolla $ign'],
+	['Elvis Presley', 'Lil Pump'],
+	['Ray Charles', 'YoungBoy Never Broke Again'],
+	['Lil Xan', '*NSYNC'],
+	['Migos', 'Los Amigos Invisibles']
 ];
 
 const Recommendation = styled.div`

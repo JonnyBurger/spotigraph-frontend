@@ -49,8 +49,8 @@ const StyledLink = styled(Link)`
 
 class App extends Component {
 	state = {
-		one: '',
-		two: '',
+		one: null,
+		two: null,
 		results: []
 	};
 	render() {
@@ -68,7 +68,9 @@ class App extends Component {
 						onChange={hit => this.setState({two: hit})}
 					/>
 				</Container>
-				<StyledLink to={`/${this.state.one.name}/${this.state.two.name}`}>
+				<StyledLink
+					to={disabled ? '' : `/${this.state.one.name}/${this.state.two.name}`}
+				>
 					<Button disabled={disabled}>Find connection</Button>
 				</StyledLink>
 				<br />

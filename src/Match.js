@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import {isEqual} from 'lodash';
 import styled from 'styled-components';
 import Graph from './Graph';
 import Title, {Subtitle} from './Title';
 import X from './X';
+import Recommendations from './Recommendations';
 
 const Container = styled.div`
 	display: flex;
@@ -18,28 +20,58 @@ const TitleRow = styled.div`
 	flex-direction: row;
 	align-items: center;
 	margin-bottom: 100px;
+	margin-top: 100px;
+`;
+
+const Button = styled.div`
+	font-size: 13px;
+	border: 1px solid #666;
+	padding: 4px 10px;
+	border-radius: 2px;
+	text-decoration: none;
+	color: #666;
+	&:hover {
+		color: #222;
+		border-color: #222;
+	}
+`;
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
 `;
 
 class MatchPage extends Component {
-	state = {result: null};
+	state = {result: null, loading: false};
 	componentDidMount() {
-		fetch('http://localhost:7000', {
+		this.doFetch();
+	}
+	doFetch(props = this.props) {
+		this.setState({
+			loading: true
+		});
+		fetch('http://167.99.85.241:7000', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
 			},
 			body: JSON.stringify({
-				one: this.props.match.params.one,
-				two: this.props.match.params.two
+				one: props.match.params.one,
+				two: props.match.params.two
 			})
 		})
 			.then(response => response.json())
 			.then(response => {
 				this.setState({
-					result: response.data
+					result: response.data,
+					loading: false
 				});
 			})
 			.catch(err => console.log(err));
+	}
+	componentWillReceiveProps(props) {
+		if (!isEqual(props.match.params, this.props.match.params)) {
+			this.doFetch(props);
+		}
 	}
 	renderSubtitle() {
 		if (this.state.result.segments.length === 2) {
@@ -70,8 +102,29 @@ class MatchPage extends Component {
 		);
 	}
 	render() {
-		if (!this.state.result) {
+		const isSame = this.props.match.params.one === this.props.match.params.two;
+		if (this.state.loading) {
 			return 'Loading...';
+		}
+		if (!this.state.result || isSame) {
+			return (
+				<Container
+					style={{
+						flexDirection: 'column'
+					}}
+				>
+					<Title>{isSame ? 'Wow, look at that.' : 'You win.'}</Title>
+					<Subtitle>
+						We could not find a connection between{' '}
+						<strong>{this.props.match.params.one}</strong> and{' '}
+						<strong>{this.props.match.params.two}</strong>. <br /> Do you want
+						to try one of our suggestions?
+						<div style={{margin: 'auto', maxWidth: 1000, marginTop: 40}}>
+							<Recommendations />
+						</div>
+					</Subtitle>
+				</Container>
+			);
 		}
 		return (
 			<Container>
@@ -84,7 +137,9 @@ class MatchPage extends Component {
 				>
 					<TitleRow>
 						<div>
-							<Link to="/">Go back</Link>
+							<StyledLink to="/">
+								<Button>Go back</Button>
+							</StyledLink>
 						</div>
 						<div style={{alignSelf: 'center', flex: 1}}>
 							<Title>
@@ -94,7 +149,9 @@ class MatchPage extends Component {
 							<Subtitle>{this.renderSubtitle()}</Subtitle>
 						</div>
 						<div>
-							<Link to="/">Tweet</Link>
+							<StyledLink to="/">
+								<Button>Tweet</Button>
+							</StyledLink>
 						</div>
 					</TitleRow>
 					<Graph result={this.state.result} />

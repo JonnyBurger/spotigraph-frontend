@@ -203,6 +203,7 @@ const Graph = props => {
 						<AnimatedSong
 							delay={(1 + i) * TIME_PER_ITEM}
 							song={segment.relationship.properties.song}
+							preview={segment.relationship.properties.preview}
 						/>
 					);
 				})}
