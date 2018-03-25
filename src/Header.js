@@ -8,14 +8,6 @@ const Container = styled.div`
 	padding-top: 40px;
 `;
 
-const Description = styled.div`
-	font-family: 'Playfair Display';
-	font-size: 14px;
-	text-align: center;
-	max-width: 600px;
-	margin: auto;
-`;
-
 export default () => {
 	return (
 		<Container>

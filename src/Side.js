@@ -1,19 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import {
-	InstantSearch,
-	Hits,
-	SearchBox,
-	Configure
-} from 'react-instantsearch/dom';
-import {connectHits, connectStateResults} from 'react-instantsearch/connectors';
+import {InstantSearch, SearchBox, Configure} from 'react-instantsearch/dom';
+import {uniqBy} from 'lodash';
+import {connectStateResults} from 'react-instantsearch/connectors';
 import styled, {keyframes} from 'styled-components';
-import CrossfadeImage from 'react-crossfade-image';
-import HitsPerPage from 'react-instantsearch/src/widgets/HitsPerPage';
 import Title from './Title';
 
 const Wrapper = styled.div`
 	flex: 1;
-	background: black;
+	background: radial-gradient(circle at bottom left, #222, #444);
 	margin: 10px;
 	position: relative;
 `;
@@ -62,14 +56,10 @@ const Hit = styled.div`
 `;
 
 const MyResults = props => {
-	const mergedHits =
-		props.searchResults.hits.length > 0
-			? props.searchResults.hits
-			: [
-					{
-						name: props.searchResults.query
-					}
-			  ];
+	const mergedHits = uniqBy(
+		[...props.searchResults.hits, {name: props.searchResults.query}],
+		r => r.name
+	);
 	return (
 		<CustomHits>
 			{mergedHits.map((hit, i) => {
@@ -97,7 +87,7 @@ const Results = connectStateResults(MyResults);
 const Background = styled.img`
 	object-fit: cover;
 	position: absolute;
-	background: black;
+	background: radial-gradient(center, #444, #222);
 	width: 100%;
 	height: 100%;
 	mix-blend-mode: luminosity;
@@ -114,6 +104,28 @@ const Container = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const sponsorAnimation = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
+const SponsorInfo = styled.div`
+	color: rgba(255, 255, 255, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	position: absolute;
+	bottom: 0;
+	font-size: 13px;
+	animation: ${sponsorAnimation} 0.5s;
+	margin-bottom: 15px;
 `;
 
 const Change = styled.div`
@@ -220,6 +232,16 @@ class Side extends Component {
 								) : null}
 							</InstantSearch>
 						)}
+						{this.state.focused ? (
+							<SponsorInfo>
+								Search results provided by
+								<img
+									alt="Algolia"
+									style={{height: 25, marginLeft: 10}}
+									src={require('./algolia-logo-light.png')}
+								/>
+							</SponsorInfo>
+						) : null}
 					</Container>
 				</Wrapper>
 			</Fragment>

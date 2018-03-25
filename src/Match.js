@@ -15,6 +15,7 @@ const Container = styled.div`
 	justify-content: center;
 	min-width: 100vw;
 	min-height: 100vh;
+	background: #222;
 `;
 
 const TitleRow = styled.div`
@@ -23,18 +24,19 @@ const TitleRow = styled.div`
 	align-items: center;
 	margin-bottom: 100px;
 	margin-top: 100px;
+	color: white;
 `;
 
 const Button = styled.div`
 	font-size: 13px;
-	border: 1px solid #666;
+	border: 1px solid #aaa;
 	padding: 4px 10px;
 	border-radius: 2px;
 	text-decoration: none;
-	color: #666;
+	color: #aaa;
 	&:hover {
-		color: #222;
-		border-color: #222;
+		color: #ccc;
+		border-color: #ccc;
 	}
 `;
 
@@ -48,7 +50,7 @@ class MatchPage extends Component {
 		this.doFetch();
 		setTimeout(() => {
 			this.setState({loadingReady: true});
-		}, 2000);
+		}, 1500);
 	}
 	doFetch(props = this.props) {
 		this.setState({
@@ -113,27 +115,28 @@ class MatchPage extends Component {
 		const isSame = this.props.match.params.one === this.props.match.params.two;
 		if (this.state.loading || !this.state.loadingReady) {
 			return (
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						width: '100wv',
-						height: '100vh'
-					}}
-				>
-					<Lottie
-						width={70}
-						height={70}
-						options={{
-							loop: true,
-							autoPlay: true,
-							animationData
+				<Container>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							width: '100wv',
+							height: '100vh'
 						}}
-					/>
-				</div>
+					>
+						<Lottie
+							width={70}
+							height={70}
+							options={{
+								loop: true,
+								autoPlay: true,
+								animationData
+							}}
+						/>
+					</div>
+				</Container>
 			);
-			return 'Loading...';
 		}
 		if (!this.state.result || isSame) {
 			return (

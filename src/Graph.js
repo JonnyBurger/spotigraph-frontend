@@ -15,6 +15,21 @@ const Timeline = styled.div`
 	flex: 1;
 `;
 
+const songColorAnimation = keyframes`
+    from {
+		color: white;
+    }
+    25% {
+		color: black;
+    }
+    75% {
+		color: black;
+    }
+    to {
+		color: white;
+    }
+`;
+
 const Song = styled.div`
 	flex: 1;
 	font-size: 14px;
@@ -24,10 +39,14 @@ const Song = styled.div`
 	font-weight: bold;
 	margin: 3px;
 	height: 60px;
-	color: #222;
+	color: white;
 	justify-content: center;
 	position: relative;
 	text-align: center;
+	font-family: 'Playfair Display';
+	border: 3px solid rgba(255, 255, 255, 0.1);
+	animation: ${songColorAnimation} ${TIME_PER_ITEM / 1000 + 0.3}s
+		${props => props.delay / 1000}s;
 `;
 
 const animation = keyframes`
@@ -56,7 +75,6 @@ const SongAnimation = styled.div`
 	height: 100%;
 	width: 0%;
 	left: 0;
-	z-index: -1;
 	position: absolute;
 	animation: ${animation} ${TIME_PER_ITEM / 1000 + 0.3}s
 		${props => props.delay / 1000}s;
@@ -99,11 +117,6 @@ const Artist = styled.div`
 		${props => props.delay / 1000}s;
 	animation-fill-mode: forwards;
 	text-align: center;
-`;
-
-const Cover = styled.img`
-	height: 50px;
-	width: 50px;
 `;
 
 const Padder = styled.div`
@@ -164,19 +177,21 @@ class Animated extends Component {
 }
 
 const AnimatedSong = props => {
-	const {delay, ...otherProps} = props;
+	const {delay} = props;
 	return (
 		<Animated delay={delay}>
-			<Song {...otherProps}>
+			<Song {...props}>
 				<SongAnimation delay={delay} />
-				<div>“{removeBrackets(props.song)}”</div>
+				<div style={{position: 'absolute'}}>
+					“{removeBrackets(props.song).trim()}”
+				</div>
 			</Song>
 		</Animated>
 	);
 };
 
 const AnimatedArtist = props => {
-	const {delay, artistsLength, last, first, ...otherProps} = props;
+	const {delay, last, first} = props;
 	const realDelay = delay + (last ? 0 : TIME_PER_ITEM) + (first ? -100 : 0);
 	return (
 		<Animated delay={delay}>

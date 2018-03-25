@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import logo from './logo.svg';
 import Side from './Side';
-import Graph from './Graph';
 import Header from './Header';
 import Recommendations from './Recommendations';
 
@@ -50,8 +48,7 @@ const StyledLink = styled(Link)`
 class App extends Component {
 	state = {
 		one: null,
-		two: null,
-		results: []
+		two: null
 	};
 	render() {
 		const disabled = ![this.state.one, this.state.two].every(Boolean);
@@ -75,13 +72,10 @@ class App extends Component {
 				</StyledLink>
 				<br />
 				<br />
-				<p style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', fontFamily: 'Playfair Display'}}>
 					Don't feel inspired? Try one of these:
-				</p>
+				</div>
 				<Recommendations />
-				{this.state.results.reverse().map(({data, time}) => {
-					return <Graph key={time} result={data} />;
-				})}
 			</Site>
 		);
 	}
