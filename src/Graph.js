@@ -4,6 +4,7 @@ import {tween} from 'popmotion';
 import {MotionValue} from 'popmotion-react';
 
 const TIME_PER_ITEM = 1500;
+const START_DELAY = 1000;
 
 const Timeline = styled.div`
 	display: flex;
@@ -115,6 +116,7 @@ const Padder = styled.div`
 const BackgroundImage = styled.img`
 	width: 100%;
 	height: 100%;
+	opacity: 0.4;
 	object-fit: cover;
 	position: absolute;
 	mix-blend-mode: luminosity;
@@ -180,9 +182,7 @@ const AnimatedArtist = props => {
 		<Animated delay={delay}>
 			<Artist time={2 * TIME_PER_ITEM} first={first} delay={realDelay}>
 				{props.artist.image && props.artist.image !== 'undefined' ? (
-					<Animated end={0.4} delay={realDelay + TIME_PER_ITEM}>
-						<BackgroundImage src={props.artist.image} />
-					</Animated>
+					<BackgroundImage src={props.artist.image} />
 				) : null}
 				<Label>{props.artist.title}</Label>
 			</Artist>
@@ -201,7 +201,7 @@ const Graph = props => {
 					}
 					return (
 						<AnimatedSong
-							delay={(1 + i) * TIME_PER_ITEM}
+							delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 							song={segment.relationship.properties.song}
 							preview={segment.relationship.properties.preview}
 						/>
@@ -216,12 +216,12 @@ const Graph = props => {
 							<AnimatedArtist
 								first={i === 0}
 								artistsLength={props.result.segments.length}
-								delay={i * TIME_PER_ITEM}
+								delay={i * TIME_PER_ITEM + START_DELAY}
 								artist={segment.start.properties}
 							/>
 							{i + 1 === props.result.segments.length ? (
 								<AnimatedArtist
-									delay={(i + 1) * TIME_PER_ITEM}
+									delay={(i + 1) * TIME_PER_ITEM + START_DELAY}
 									last
 									artistsLength={props.result.segments.length}
 									artist={segment.end.properties}
@@ -238,7 +238,7 @@ const Graph = props => {
 					}
 					return (
 						<AnimatedSong
-							delay={(1 + i) * TIME_PER_ITEM}
+							delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 							song={segment.relationship.properties.song}
 						/>
 					);

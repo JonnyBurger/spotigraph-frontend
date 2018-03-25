@@ -5,7 +5,7 @@ import {
 	SearchBox,
 	Configure
 } from 'react-instantsearch/dom';
-import {connectHits} from 'react-instantsearch/connectors';
+import {connectHits, connectStateResults} from 'react-instantsearch/connectors';
 import styled, {keyframes} from 'styled-components';
 import CrossfadeImage from 'react-crossfade-image';
 import HitsPerPage from 'react-instantsearch/src/widgets/HitsPerPage';
@@ -62,9 +62,17 @@ const Hit = styled.div`
 `;
 
 const MyResults = props => {
+	const mergedHits =
+		props.searchResults.hits.length > 0
+			? props.searchResults.hits
+			: [
+					{
+						name: props.searchResults.query
+					}
+			  ];
 	return (
 		<CustomHits>
-			{props.hits.map((hit, i) => {
+			{mergedHits.map((hit, i) => {
 				return (
 					<Hit
 						className={i === props.selected ? 'selected-result' : null}
@@ -84,7 +92,7 @@ const MyResults = props => {
 	);
 };
 
-const Results = connectHits(MyResults);
+const Results = connectStateResults(MyResults);
 
 const Background = styled.img`
 	object-fit: cover;

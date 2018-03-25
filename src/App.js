@@ -75,6 +75,9 @@ class App extends Component {
 				</StyledLink>
 				<br />
 				<br />
+				<p style={{textAlign: 'center'}}>
+					Don't feel inspired? Try one of these:
+				</p>
 				<Recommendations />
 				{this.state.results.reverse().map(({data, time}) => {
 					return <Graph key={time} result={data} />;

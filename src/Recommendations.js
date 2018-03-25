@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import {lighten, invert} from 'polished';
+import {shuffle} from 'lodash';
+import {lighten, invert, readableColor} from 'polished';
 import X from './X';
 
 const recommendations = [
@@ -9,7 +10,6 @@ const recommendations = [
 	['Paul Simon', 'Jake Paul'],
 	['Kanye West', 'Taylor Swift'],
 	['Jimi Hendrix', 'Future'],
-	['Kurt Cobain', 'Kirko Bangz'],
 	['Ludwig van Beethoven', 'Zaytoven'],
 	['Lorde', 'JAY Z'],
 	['Willow', 'Jaden Smith'],
@@ -24,6 +24,9 @@ const recommendations = [
 
 const Recommendation = styled.div`
 	background: #222;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: bold;
 	display: inline-block;
 	color: white;
 	padding: 10px 20px;
@@ -33,17 +36,19 @@ const Recommendation = styled.div`
 
 const Recommendations = props => {
 	return (
-		<div>
-			{recommendations.map((recom, i) => {
+		<div style={{textAlign: 'center'}}>
+			{shuffle(recommendations).map((recom, i) => {
+				const color = lighten(0.05 * i, '#222222');
 				return (
 					<Link key={recom.join()} to={`/${recom[0]}/${recom[1]}`}>
 						<Recommendation
 							style={{
-								background: lighten(0.05 * i, '#222222')
+								background: color,
+								color: readableColor(color)
 							}}
 						>
 							{recom[0]}
-							<X style={{color: invert(lighten(0.05 * i, '#222222'))}} />
+							<X style={{color: readableColor(color), fontWeight: 'normal'}} />
 							{recom[1]}
 						</Recommendation>
 					</Link>

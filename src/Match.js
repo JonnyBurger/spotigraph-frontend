@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {isEqual} from 'lodash';
 import styled from 'styled-components';
+import Lottie from 'react-lottie';
 import Graph from './Graph';
 import Title, {Subtitle} from './Title';
 import X from './X';
 import Recommendations from './Recommendations';
+import * as animationData from './animation';
 
 const Container = styled.div`
 	display: flex;
@@ -41,9 +43,12 @@ const StyledLink = styled(Link)`
 `;
 
 class MatchPage extends Component {
-	state = {result: null, loading: false};
+	state = {result: null, loading: false, loadingReady: false};
 	componentDidMount() {
 		this.doFetch();
+		setTimeout(() => {
+			this.setState({loadingReady: true});
+		}, 2000);
 	}
 	doFetch(props = this.props) {
 		this.setState({
@@ -106,26 +111,60 @@ class MatchPage extends Component {
 	}
 	render() {
 		const isSame = this.props.match.params.one === this.props.match.params.two;
-		if (this.state.loading) {
+		if (this.state.loading || !this.state.loadingReady) {
+			return (
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						width: '100wv',
+						height: '100vh'
+					}}
+				>
+					<Lottie
+						width={70}
+						height={70}
+						options={{
+							loop: true,
+							autoPlay: true,
+							animationData
+						}}
+					/>
+				</div>
+			);
 			return 'Loading...';
 		}
 		if (!this.state.result || isSame) {
 			return (
-				<Container
-					style={{
-						flexDirection: 'column'
-					}}
-				>
-					<Title>{isSame ? 'Wow, look at that.' : 'You win.'}</Title>
-					<Subtitle>
-						We could not find a connection between{' '}
-						<strong>{this.props.match.params.one}</strong> and{' '}
-						<strong>{this.props.match.params.two}</strong>. <br /> Do you want
-						to try one of our suggestions?
-						<div style={{margin: 'auto', maxWidth: 1000, marginTop: 40}}>
+				<Container style={{justifyContent: 'center', alignItems: 'center'}}>
+					<div
+						style={{
+							display: 'block',
+							flex: 1,
+							maxWidth: 1000
+						}}
+					>
+						<TitleRow>
+							<div>
+								<StyledLink to="/">
+									<Button>Go back</Button>
+								</StyledLink>
+							</div>
+							<div style={{alignSelf: 'center', flex: 1}}>
+								<Title>{isSame ? 'Wow, look at that.' : 'You win.'}</Title>
+								<Subtitle>
+									We could not find a connection between{' '}
+									<strong>{this.props.match.params.one}</strong> and{' '}
+									<strong>{this.props.match.params.two}</strong>. <br /> Do you
+									want to try one of our suggestions?
+								</Subtitle>
+							</div>
+						</TitleRow>
+						<div style={{margin: 'auto', maxWidth: 1000, textAlign: 'center'}}>
 							<Recommendations />
 						</div>
-					</Subtitle>
+					</div>
 				</Container>
 			);
 		}
