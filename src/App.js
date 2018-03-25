@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Link} from 'react-router-dom';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import Side from './Side';
 import Header from './Header';
 import Recommendations from './Recommendations';
+import mobile from './mobile';
 
 const Site = styled.div`
 	max-width: 1000px;
@@ -14,8 +15,11 @@ const Container = styled.div`
 	display: flex;
 	max-width: 1000px;
 	margin: auto;
-	height: 60vh;
+	height: 600px;
 	z-index: -1;
+	${mobile`
+		flex-direction: column;
+	`};
 `;
 
 const Button = styled.div`
@@ -30,7 +34,10 @@ const Button = styled.div`
 	color: white;
 	font-size: 20px;
 	margin-top: 10px;
-	${props =>
+	${mobile`
+		margin-left: 10px;
+		margin-right: 10px;
+	`} ${props =>
 		props.disabled
 			? `	
 			opacity: 0.7;
@@ -45,6 +52,41 @@ const StyledLink = styled(Link)`
 	cursor: pointer;
 `;
 
+const SponsorInfo = styled.div`
+	font-weight: bold;
+	bottom: 0;
+	font-size: 13px;
+	animation: ${sponsorAnimation} 0.5s;
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	* {
+		vertical-align: middle;
+	}
+	${mobile`
+		display: block;
+	`};
+`;
+
+const MobileDiv = styled.div`
+	display: inline-block;
+	width: 100px;
+	${mobile`
+		width: 100%;
+	`};
+`;
+
+const sponsorAnimation = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
 class App extends Component {
 	state = {
 		one: null,
@@ -53,30 +95,71 @@ class App extends Component {
 	render() {
 		const disabled = ![this.state.one, this.state.two].every(Boolean);
 		return (
-			<Site>
-				<Header />
-				<Container>
-					<Side
-						selected={this.state.one}
-						onChange={hit => this.setState({one: hit})}
-					/>
-					<Side
-						selected={this.state.two}
-						onChange={hit => this.setState({two: hit})}
-					/>
-				</Container>
-				<StyledLink
-					to={disabled ? '' : `/${this.state.one.name}/${this.state.two.name}`}
+			<Fragment>
+				<Site>
+					<Header />
+					<Container>
+						<Side
+							selected={this.state.one}
+							onChange={hit => this.setState({one: hit})}
+						/>
+						<Side
+							selected={this.state.two}
+							onChange={hit => this.setState({two: hit})}
+							right
+						/>
+					</Container>
+					<StyledLink
+						to={
+							disabled ? '' : `/${this.state.one.name}/${this.state.two.name}`
+						}
+					>
+						<Button disabled={disabled}>Find connection</Button>
+					</StyledLink>
+					<br />
+					<br />
+					<SponsorInfo>
+						Music data by
+						<a href="https://developer.spotify.com/web-api/" target="_blank">
+							<img
+								alt="Spotify"
+								style={{height: 25, marginLeft: 10}}
+								src={require('./spotify.png')}
+							/>
+						</a>
+						<MobileDiv />
+						Search by
+						<a href="https://www.algolia.com/" target="_blank">
+							<img
+								alt="Algolia"
+								style={{height: 25, marginLeft: 10}}
+								src={require('./algolia-logo-light.png')}
+							/>
+						</a>
+					</SponsorInfo>
+
+					<div
+						style={{
+							textAlign: 'center',
+							fontFamily: 'Playfair Display',
+							marginTop: 100
+						}}
+					>
+						Don't feel inspired? Try one of these:
+					</div>
+				</Site>
+				<div
+					style={{
+						background: 'linear-gradient(white, white)',
+						paddingBottom: 100,
+						paddingTop: 30
+					}}
 				>
-					<Button disabled={disabled}>Find connection</Button>
-				</StyledLink>
-				<br />
-				<br />
-				<div style={{textAlign: 'center', fontFamily: 'Playfair Display'}}>
-					Don't feel inspired? Try one of these:
+					<Site>
+						<Recommendations />
+					</Site>
 				</div>
-				<Recommendations />
-			</Site>
+			</Fragment>
 		);
 	}
 }

@@ -2,6 +2,8 @@ import React, {Fragment, Component} from 'react';
 import styled, {keyframes} from 'styled-components';
 import {tween} from 'popmotion';
 import {MotionValue} from 'popmotion-react';
+import scrollIntoView from 'scroll-into-view';
+import mobile, {desktop} from './mobile';
 
 const TIME_PER_ITEM = 1500;
 const START_DELAY = 1000;
@@ -13,6 +15,9 @@ const Timeline = styled.div`
 	margin: auto;
 	align-items: center;
 	flex: 1;
+	${mobile`
+		flex-direction: column;
+	`};
 `;
 
 const songColorAnimation = keyframes`
@@ -47,6 +52,10 @@ const Song = styled.div`
 	border: 3px solid rgba(255, 255, 255, 0.1);
 	animation: ${songColorAnimation} ${TIME_PER_ITEM / 1000 + 0.3}s
 		${props => props.delay / 1000}s;
+	${mobile`
+		width: calc(100% - 20px);
+		border-width: 0px;
+	`};
 `;
 
 const animation = keyframes`
@@ -117,6 +126,9 @@ const Artist = styled.div`
 		${props => props.delay / 1000}s;
 	animation-fill-mode: forwards;
 	text-align: center;
+	${mobile`
+		width: calc(100% - 20px);
+	`};
 `;
 
 const Padder = styled.div`
@@ -134,12 +146,26 @@ const BackgroundImage = styled.img`
 	position: absolute;
 	mix-blend-mode: luminosity;
 	filter: brightness(140%);
+	-webkit-filter: brightness(140%);
 	z-index: 0;
+`;
+
+const DesktopTimeline = Timeline.extend`
+	${mobile`
+		display: none;
+	`};
 `;
 
 const Label = styled.div`
 	position: absolute;
 	z-index: 0;
+`;
+
+const MobilePadding = styled.div`
+	height: 150px;
+	${desktop`
+		display: none;
+	`};
 `;
 
 const removeBrackets = string => {
@@ -176,39 +202,65 @@ class Animated extends Component {
 	}
 }
 
-const AnimatedSong = props => {
-	const {delay} = props;
-	return (
-		<Animated delay={delay}>
-			<Song {...props}>
-				<SongAnimation delay={delay} />
-				<div style={{position: 'absolute'}}>
-					“{removeBrackets(props.song).trim()}”
-				</div>
-			</Song>
-		</Animated>
-	);
-};
+class AnimatedSong extends Component {
+	componentDidMount() {
+		if (this.props.scroll) {
+			this.timeout = setTimeout(() => {
+				scrollIntoView(this.elem);
+			}, this.props.delay);
+		}
+	}
+	componentWillUnmount() {
+		if (this.props.scroll) {
+			clearTimeout(this.timeout);
+		}
+	}
+	render() {
+		const {delay, className} = this.props;
+		return (
+			<Animated delay={delay} className={className}>
+				<Song {...this.props} innerRef={ref => (this.elem = ref)}>
+					<SongAnimation delay={delay} />
+					<div style={{position: 'absolute'}}>
+						“{removeBrackets(this.props.song).trim()}”
+					</div>
+					{this.props.preview}
+				</Song>
+			</Animated>
+		);
+	}
+}
 
-const AnimatedArtist = props => {
-	const {delay, last, first} = props;
-	const realDelay = delay + (last ? 0 : TIME_PER_ITEM) + (first ? -100 : 0);
-	return (
-		<Animated delay={delay}>
-			<Artist time={2 * TIME_PER_ITEM} first={first} delay={realDelay}>
-				{props.artist.image && props.artist.image !== 'undefined' ? (
-					<BackgroundImage src={props.artist.image} />
-				) : null}
-				<Label>{props.artist.title}</Label>
-			</Artist>
-		</Animated>
-	);
-};
+const AnimatedSongMobile = styled(AnimatedSong).attrs({
+	scroll: true
+})`
+	${desktop`
+		display: none;
+	`};
+`;
+
+class AnimatedArtist extends Component {
+	render() {
+		const {delay, last, first} = this.props;
+		const realDelay = delay + (last ? 0 : TIME_PER_ITEM) + (first ? -100 : 0);
+		return (
+			<Animated delay={delay}>
+				<Artist time={2 * TIME_PER_ITEM} first={first} delay={realDelay}>
+					{this.props.artist.image &&
+					this.props.artist.image !== 'undefined' ? (
+						<BackgroundImage src={this.props.artist.image} />
+					) : null}
+					<Label>{this.props.artist.title}</Label>
+				</Artist>
+			</Animated>
+		);
+	}
+}
 
 const Graph = props => {
 	return (
 		<div>
-			<Timeline>
+			<DesktopTimeline>
 				<Padder />
 				{props.result.segments.map((segment, i) => {
 					if (i % 2 === 0) {
@@ -218,12 +270,11 @@ const Graph = props => {
 						<AnimatedSong
 							delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 							song={segment.relationship.properties.song}
-							preview={segment.relationship.properties.preview}
 						/>
 					);
 				})}
 				{props.result.segments.length % 2 === 1 ? <Padder /> : null}
-			</Timeline>
+			</DesktopTimeline>
 			<Timeline>
 				{props.result.segments.map((segment, i) => {
 					return (
@@ -233,6 +284,10 @@ const Graph = props => {
 								artistsLength={props.result.segments.length}
 								delay={i * TIME_PER_ITEM + START_DELAY}
 								artist={segment.start.properties}
+							/>
+							<AnimatedSongMobile
+								delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
+								song={segment.relationship.properties.song}
 							/>
 							{i + 1 === props.result.segments.length ? (
 								<AnimatedArtist
@@ -246,7 +301,7 @@ const Graph = props => {
 					);
 				})}
 			</Timeline>
-			<Timeline>
+			<DesktopTimeline>
 				{props.result.segments.map((segment, i) => {
 					if (i % 2 === 1) {
 						return null;
@@ -259,7 +314,8 @@ const Graph = props => {
 					);
 				})}
 				{props.result.segments.length % 2 === 0 ? <Padder /> : null}
-			</Timeline>
+			</DesktopTimeline>
+			<MobilePadding />
 		</div>
 	);
 };

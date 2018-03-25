@@ -3,11 +3,13 @@ import {Link} from 'react-router-dom';
 import {isEqual} from 'lodash';
 import styled from 'styled-components';
 import Lottie from 'react-lottie';
+import Helmet from 'react-helmet';
 import Graph from './Graph';
-import Title, {Subtitle} from './Title';
+import Title, {Subtitle, TitleRow} from './Title';
 import X from './X';
 import Recommendations from './Recommendations';
 import * as animationData from './animation';
+import mobile, {desktop} from './mobile';
 
 const Container = styled.div`
 	display: flex;
@@ -18,15 +20,6 @@ const Container = styled.div`
 	background: #222;
 `;
 
-const TitleRow = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-bottom: 100px;
-	margin-top: 100px;
-	color: white;
-`;
-
 const Button = styled.div`
 	font-size: 13px;
 	border: 1px solid #aaa;
@@ -34,6 +27,8 @@ const Button = styled.div`
 	border-radius: 2px;
 	text-decoration: none;
 	color: #aaa;
+	margin-left: 4px;
+	margin-right: 4px;
 	&:hover {
 		color: #ccc;
 		border-color: #ccc;
@@ -42,15 +37,26 @@ const Button = styled.div`
 
 const StyledLink = styled(Link)`
 	text-decoration: none;
+	text-align: center;
+	${props =>
+		props.desktop
+			? mobile`
+		display: none;
+	`
+			: null} ${props =>
+		props.mobile
+			? desktop`
+		display: none;
+	`
+			: null};
 `;
-
 class MatchPage extends Component {
 	state = {result: null, loading: false, loadingReady: false};
 	componentDidMount() {
 		this.doFetch();
 		setTimeout(() => {
 			this.setState({loadingReady: true});
-		}, 1500);
+		}, 1000);
 	}
 	doFetch(props = this.props) {
 		this.setState({
@@ -58,7 +64,7 @@ class MatchPage extends Component {
 		});
 		const domain = window.location.href.match(/feature.fyi/)
 			? 'https://api.feature.fyi'
-			: 'http://localhost:7000';
+			: 'http://192.168.178.41:7000';
 		fetch(domain, {
 			method: 'POST',
 			headers: {
@@ -106,8 +112,8 @@ class MatchPage extends Component {
 		}
 		return (
 			<span>
-				They are connected through a chain of{' '}
-				{this.state.result.segments.length - 1} artists.
+				They are connected through {this.state.result.segments.length - 1} other
+				artists.
 			</span>
 		);
 	}
@@ -159,8 +165,9 @@ class MatchPage extends Component {
 								<Subtitle>
 									We could not find a connection between{' '}
 									<strong>{this.props.match.params.one}</strong> and{' '}
-									<strong>{this.props.match.params.two}</strong>. <br /> Do you
-									want to try one of our suggestions?
+									<strong>{this.props.match.params.two}</strong>.{' '}
+									{isSame ? 'Head explode.' : null} <br /> Do you want to try
+									one of our suggestions?
 								</Subtitle>
 							</div>
 						</TitleRow>
@@ -180,10 +187,16 @@ class MatchPage extends Component {
 						maxWidth: 1000
 					}}
 				>
+					<Helmet>
+						<title>
+							{this.props.match.params.one} × {this.props.match.params.two}
+						</title>
+					</Helmet>
+
 					<TitleRow>
 						<div>
-							<StyledLink to="/">
-								<Button>Go back</Button>
+							<StyledLink to="/" desktop>
+								<Button>Search another</Button>
 							</StyledLink>
 						</div>
 						<div style={{alignSelf: 'center', flex: 1}}>
@@ -193,9 +206,9 @@ class MatchPage extends Component {
 							</Title>
 							<Subtitle>{this.renderSubtitle()}</Subtitle>
 						</div>
-						<div>
-							<StyledLink to="/">
-								<Button>Tweet</Button>
+						<div style={{flexDirection: 'row', display: 'flex'}}>
+							<StyledLink to="/" mobile>
+								<Button>Search another</Button>
 							</StyledLink>
 						</div>
 					</TitleRow>

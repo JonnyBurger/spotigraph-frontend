@@ -4,12 +4,16 @@ import {uniqBy} from 'lodash';
 import {connectStateResults} from 'react-instantsearch/connectors';
 import styled, {keyframes} from 'styled-components';
 import Title from './Title';
+import {desktop} from './mobile';
+import ImageFade from './ImageFade';
+import Pattern from './Pattern';
 
 const Wrapper = styled.div`
 	flex: 1;
 	background: radial-gradient(circle at bottom left, #222, #444);
 	margin: 10px;
 	position: relative;
+	overflow: hidden;
 `;
 
 const slideUp = keyframes`
@@ -23,24 +27,29 @@ const slideUp = keyframes`
 const Field = styled(SearchBox)`
 	input[type='search'] {
 		background: white;
-		border: none;
+		border: 0;
 		padding: 15px 20px;
 		font-size: 24px;
 		outline: none;
 		margin-top: 0;
+		border-radius: 0;
+		-webkit-appearance: none;
 		transition: transform 0.3s, padding-left 0.3s, padding-right 0.3s;
 		&:focus {
 			padding-left: 30px;
 			padding-right: 60px;
-			transform: translateY(-40px);
+			${desktop`			
+				transform: translateY(-40px);
+			`};
 		}
 	}
 `;
 
 const CustomHits = styled.div`
-	transform: translateY(-40px);
-	animation: ${slideUp} 0.3s;
-	max-height: 200px;
+	${desktop`	
+		transform: translateY(-40px);
+		animation: ${slideUp} 0.3s;
+	`} max-height: 200px;
 	overflow: auto;
 	overflow-x: hidden;
 	background: white;
@@ -59,12 +68,13 @@ const MyResults = props => {
 	const mergedHits = uniqBy(
 		[...props.searchResults.hits, {name: props.searchResults.query}],
 		r => r.name
-	);
+	).filter(r => r.name);
 	return (
 		<CustomHits>
 			{mergedHits.map((hit, i) => {
 				return (
 					<Hit
+						key={hit.name}
 						className={i === props.selected ? 'selected-result' : null}
 						selected={i === props.selected}
 						onMouseDown={() => {
@@ -106,28 +116,6 @@ const Container = styled.div`
 	align-items: center;
 `;
 
-const sponsorAnimation = keyframes`
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-`;
-
-const SponsorInfo = styled.div`
-	color: rgba(255, 255, 255, 0.7);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-weight: bold;
-	position: absolute;
-	bottom: 0;
-	font-size: 13px;
-	animation: ${sponsorAnimation} 0.5s;
-	margin-bottom: 15px;
-`;
-
 const Change = styled.div`
 	text-transform: uppercase;
 	text-align: center;
@@ -143,7 +131,6 @@ const Change = styled.div`
 
 class Side extends Component {
 	state = {
-		focused: false,
 		elemSelected: 0
 	};
 	minMaxIndex(index) {
@@ -158,7 +145,9 @@ class Side extends Component {
 				<Wrapper>
 					{this.props.selected ? (
 						<Background src={this.props.selected.image} />
-					) : null}
+					) : (
+						<Pattern />
+					)}
 					<Container>
 						{this.props.selected ? (
 							<div>
@@ -187,7 +176,9 @@ class Side extends Component {
 								<Field
 									submit={null}
 									translations={{
-										placeholder: 'Enter an artist...'
+										placeholder: this.props.right
+											? 'Enter another one'
+											: 'Enter an artist'
 									}}
 									onBlur={() => {
 										this.setState({focused: false});
@@ -232,16 +223,6 @@ class Side extends Component {
 								) : null}
 							</InstantSearch>
 						)}
-						{this.state.focused ? (
-							<SponsorInfo>
-								Search results provided by
-								<img
-									alt="Algolia"
-									style={{height: 25, marginLeft: 10}}
-									src={require('./algolia-logo-light.png')}
-								/>
-							</SponsorInfo>
-						) : null}
 					</Container>
 				</Wrapper>
 			</Fragment>
