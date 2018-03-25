@@ -49,7 +49,10 @@ class MatchPage extends Component {
 		this.setState({
 			loading: true
 		});
-		fetch('/api', {
+		const domain = window.location.href.match(/feature.fyi/)
+			? 'https://api.feature.fyi'
+			: 'http://localhost:7000';
+		fetch(domain, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
