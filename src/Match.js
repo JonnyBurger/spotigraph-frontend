@@ -49,7 +49,7 @@ class MatchPage extends Component {
 		this.setState({
 			loading: true
 		});
-		fetch('http://167.99.85.241:7000', {
+		fetch('/api', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'
