@@ -50,6 +50,7 @@ const StyledLink = styled(Link)`
 	`
 			: null};
 `;
+
 class MatchPage extends Component {
 	state = {result: null, loading: false, loadingReady: false};
 	componentDidMount() {
@@ -62,19 +63,11 @@ class MatchPage extends Component {
 		this.setState({
 			loading: true
 		});
-		const domain = window.location.href.match(/feature.fyi/)
-			? 'https://api.feature.fyi'
-			: 'http://192.168.178.41:7000';
-		fetch(domain, {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify({
-				one: props.match.params.one,
-				two: props.match.params.two
-			})
-		})
+		fetch(
+			`https://api.feature.fyi/${props.match.params.one}/${
+				props.match.params.two
+			}`
+		)
 			.then(response => response.json())
 			.then(response => {
 				this.setState({
