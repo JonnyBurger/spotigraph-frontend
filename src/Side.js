@@ -5,7 +5,6 @@ import {connectStateResults} from 'react-instantsearch/connectors';
 import styled, {keyframes} from 'styled-components';
 import Title from './Title';
 import {desktop} from './mobile';
-import ImageFade from './ImageFade';
 import Pattern from './Pattern';
 
 const Wrapper = styled.div`

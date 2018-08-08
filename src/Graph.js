@@ -168,6 +168,12 @@ const MobilePadding = styled.div`
 	`};
 `;
 
+const Cover = styled.img`
+	height: 40px;
+	width: 40px;
+	margin-right: 7px;
+`;
+
 const removeBrackets = string => {
 	return string.replace(/\(.*\)/g, '');
 };
@@ -221,10 +227,18 @@ class AnimatedSong extends Component {
 			<Animated delay={delay} className={className}>
 				<Song {...this.props} innerRef={ref => (this.elem = ref)}>
 					<SongAnimation delay={delay} />
-					<div style={{position: 'absolute'}}>
+					<div
+						style={{
+							position: 'absolute',
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}
+					>
+						<Cover src={this.props.cover} />
 						“{removeBrackets(this.props.song).trim()}”
 					</div>
-					{this.props.preview}
 				</Song>
 			</Animated>
 		);
@@ -270,6 +284,8 @@ const Graph = props => {
 						<AnimatedSong
 							delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 							song={segment.relationship.properties.song}
+							preview={segment.relationship.properties.preview}
+							cover={segment.relationship.properties.cover}
 						/>
 					);
 				})}
@@ -288,6 +304,8 @@ const Graph = props => {
 							<AnimatedSongMobile
 								delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 								song={segment.relationship.properties.song}
+								preview={segment.relationship.properties.preview}
+								cover={segment.relationship.properties.cover}
 							/>
 							{i + 1 === props.result.segments.length ? (
 								<AnimatedArtist
@@ -310,6 +328,8 @@ const Graph = props => {
 						<AnimatedSong
 							delay={(1 + i) * TIME_PER_ITEM + START_DELAY}
 							song={segment.relationship.properties.song}
+							preview={segment.relationship.properties.preview}
+							cover={segment.relationship.properties.cover}
 						/>
 					);
 				})}
