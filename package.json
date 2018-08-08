@@ -2,6 +2,7 @@
 	"name": "spotigraph-frontend",
 	"version": "0.1.0",
 	"private": true,
+	"homepage": "http://jonnyburger.io/spotigraph-frontend",
 	"dependencies": {
 		"polished": "^1.9.2",
 		"popmotion": "8.1.22",
