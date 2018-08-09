@@ -123,7 +123,7 @@ class App extends Component {
 						<a href="https://developer.spotify.com/web-api/" target="_blank">
 							<img
 								alt="Spotify"
-								style={{height: 25, marginLeft: 10}}
+								style={{height: 25, marginLeft: 11}}
 								src={require('./spotify.png')}
 							/>
 						</a>
@@ -132,7 +132,7 @@ class App extends Component {
 						<a href="https://www.algolia.com/" target="_blank">
 							<img
 								alt="Algolia"
-								style={{height: 25, marginLeft: 10}}
+								style={{height: 25, marginLeft: 11}}
 								src={require('./algolia-logo-light.png')}
 							/>
 						</a>
