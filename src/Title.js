@@ -19,7 +19,6 @@ export const TitleRow = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-bottom: 100px;
 	margin-top: 100px;
 	color: white;
 	${mobile`

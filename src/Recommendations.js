@@ -29,7 +29,7 @@ const Recommendation = styled.div`
 	font-weight: bold;
 	display: inline-block;
 	color: white;
-	padding: 10px 20px;
+	padding: 7px 8px;
 	margin: 10px;
 	cursor: pointer;
 	border-width: 1px;

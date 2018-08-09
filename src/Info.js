@@ -93,7 +93,7 @@ export default () => {
 					and the size can be controlled by changing the threshold.
 				</QuestionParagraph>
 				<QuestionParagraph>
-					For cost reason, the database currently only includes the top 10'000
+					For cost reason, the database currently only includes the top 25'000
 					most popular artists on Spotify, which still generates a network of
 					about 1.5 million links.
 				</QuestionParagraph>
@@ -103,8 +103,16 @@ export default () => {
 					)
 				</QuestionParagraph>
 				<QuestionParagraph>
-					The inspiration for this project is from xxx, which has also provided
-					a tutorial on how to build such a thing. Also credits to to{' '}
+					The inspiration for this project is from{' '}
+					<a
+						href="https://github.com/erabug/wikigraph"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Wikigraph
+					</a>
+					, which has also provided a tutorial on how to build such a thing.
+					Also credits to to{' '}
 					<a
 						href="https://algolia.com"
 						target="_blank"

@@ -98,6 +98,17 @@ class App extends Component {
 			<Fragment>
 				<Site>
 					<Header />
+					<div
+						style={{
+							background: 'linear-gradient(white, white)',
+							paddingBottom: 20
+						}}
+					>
+						<Site>
+							<Recommendations />
+						</Site>
+					</div>
+
 					<Container>
 						<Side
 							selected={this.state.one}
@@ -145,28 +156,8 @@ class App extends Component {
 							/>
 						</a>
 					</SponsorInfo>
-
-					<div
-						style={{
-							textAlign: 'center',
-							fontFamily: 'Playfair Display',
-							marginTop: 100
-						}}
-					>
-						Don't feel inspired? Try one of these:
-					</div>
+					<div style={{height: 100}} />
 				</Site>
-				<div
-					style={{
-						background: 'linear-gradient(white, white)',
-						paddingBottom: 100,
-						paddingTop: 30
-					}}
-				>
-					<Site>
-						<Recommendations />
-					</Site>
-				</div>
 			</Fragment>
 		);
 	}

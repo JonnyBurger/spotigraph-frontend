@@ -51,7 +51,7 @@ export default () => {
 					maxWidth: 1000
 				}}
 			>
-				<TitleRow style={{color: 'black', marginTop: 50, marginBottom: 50}}>
+				<TitleRow style={{color: 'black', marginTop: 50}}>
 					<div style={{flex: 1}}>
 						<Title>
 							<span style={{marginRight: 1}}>feature </span>
