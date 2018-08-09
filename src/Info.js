@@ -76,9 +76,10 @@ export default () => {
 				<QuestionParagraph>
 					This site allows you to find the shortest connection between two
 					artists based on their collaborations. For example, the shortest path
-					between Lorde and JAY Z is the following:<br /> Lorde has collaborated
-					with Disclosure (Magnets), who have collaborated with Mary J. Blige (F
-					For You), who has collaborated with JAY Z (Can't Knock The Hustle).
+					between Lorde and JAY Z is the following:
+					<br /> Lorde has collaborated with Disclosure (Magnets), who have
+					collaborated with Mary J. Blige (F For You), who has collaborated with
+					JAY Z (Can't Knock The Hustle).
 				</QuestionParagraph>
 				<QuestionTitle>How it works</QuestionTitle>
 				<QuestionParagraph>
@@ -98,16 +99,25 @@ export default () => {
 				</QuestionParagraph>
 				<QuestionTitle>Credits</QuestionTitle>
 				<QuestionParagraph>
-					Made by Jonny Burger (<a href="https://Twitter.com/JNYBGR">@JNYBGR</a>)
+					Made by Jonny Burger (<a href="https://Twitter.com/JNYBGR">@JNYBGR</a>
+					)
 				</QuestionParagraph>
 				<QuestionParagraph>
 					The inspiration for this project is from xxx, which has also provided
 					a tutorial on how to build such a thing. Also credits to to{' '}
-					<a href="https://algolia.com" target="_blank">
+					<a
+						href="https://algolia.com"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						Algolia
 					</a>{' '}
 					and{' '}
-					<a href="https://developer.spotify.com/web-api/" target="_blank">
+					<a
+						href="https://developer.spotify.com/web-api/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						Spotify
 					</a>{' '}
 					for their free APIs and{' '}
@@ -119,13 +129,18 @@ export default () => {
 				</QuestionParagraph>
 				<QuestionTitle>Open Source</QuestionTitle>
 				<QuestionParagraph>
-					<a href="https://github.com/JonnyBurger/spotigraph" target="_blank">
+					<a
+						href="https://github.com/JonnyBurger/spotigraph"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						API on Github
 					</a>
 					<br />
 					<a
 						href="https://github.com/JonnyBurger/spotigraph-frontend"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						Frontend on Github
 					</a>

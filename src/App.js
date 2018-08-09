@@ -52,6 +52,15 @@ const StyledLink = styled(Link)`
 	cursor: pointer;
 `;
 
+const sponsorAnimation = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`;
+
 const SponsorInfo = styled.div`
 	font-weight: bold;
 	bottom: 0;
@@ -76,15 +85,6 @@ const MobileDiv = styled.div`
 	${mobile`
 		width: 100%;
 	`};
-`;
-
-const sponsorAnimation = keyframes`
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
 `;
 
 class App extends Component {
@@ -120,7 +120,11 @@ class App extends Component {
 					<br />
 					<SponsorInfo>
 						Music data by
-						<a href="https://developer.spotify.com/web-api/" target="_blank">
+						<a
+							href="https://developer.spotify.com/web-api/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<img
 								alt="Spotify"
 								style={{height: 25, marginLeft: 11}}
@@ -129,7 +133,11 @@ class App extends Component {
 						</a>
 						<MobileDiv />
 						Search by
-						<a href="https://www.algolia.com/" target="_blank">
+						<a
+							href="https://www.algolia.com/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<img
 								alt="Algolia"
 								style={{height: 25, marginLeft: 11}}

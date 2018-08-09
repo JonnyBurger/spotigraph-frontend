@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import {shuffle} from 'lodash';
-import {lighten, readableColor} from 'polished';
+import {readableColor} from 'polished';
 import X from './X';
 
 const recommendations = [
