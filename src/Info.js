@@ -129,7 +129,11 @@ export default () => {
 						Spotify
 					</a>{' '}
 					for their free APIs and{' '}
-					<a target="_blank" href="https://codepen.io/chintuyadav/pen/NvxXmd">
+					<a
+						target="_blank"
+						rel="noopener noreferrer"
+						href="https://codepen.io/chintuyadav/pen/NvxXmd"
+					>
 						{' '}
 						Chintu Yadav Sara
 					</a>{' '}
