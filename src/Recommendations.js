@@ -6,8 +6,6 @@ import {readableColor} from 'polished';
 import X from './X';
 
 const recommendations = [
-	['Nas', 'Digital Nas'],
-	['Paul Simon', 'Jake Paul'],
 	['Kanye West', 'Taylor Swift'],
 	['Jimi Hendrix', 'Future'],
 	['Ludwig van Beethoven', 'Zaytoven'],
@@ -19,7 +17,9 @@ const recommendations = [
 	['Ray Charles', 'RAYE'],
 	['Migos', 'Los Amigos Invisibles'],
 	['Marvin Gaye', 'Charlie Puth'],
-	['The 1975', 'Future']
+	['The 1975', 'Future'],
+	['21 Savage', 'Twenty One Pilots'],
+	['Bon Iver', 'Bon Jovi']
 ];
 
 const Recommendation = styled.div`
